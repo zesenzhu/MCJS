@@ -10,7 +10,24 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/php': {  //代理地址
+        target: 'http://39.108.172.235:80/',  //需要代理的地址
+        changeOrigin: true,  //是否跨域
+        secure: false,
+        /*pathRewrite: {
+          '^/api': '/'   //本身的接口地址没有 '/api' 这种通用前缀，所以要rewrite，如果本身有则去掉
+        }*/
+      },
+      '/upload': {  //代理地址
+        target: 'http://39.108.172.235:80/',  //需要代理的地址
+        changeOrigin: true,  //是否跨域
+        secure: false,
+        /*pathRewrite: {
+          '^/api': '/'   //本身的接口地址没有 '/api' 这种通用前缀，所以要rewrite，如果本身有则去掉
+        }*/
+      }
+    },
 
     // Various Dev Server settings
     host: '192.168.1.88', // can be overwritten by process.env.HOST

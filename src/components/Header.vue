@@ -1,6 +1,7 @@
 <template>
   <div v-bind:class="{TopBanner : isTopBanner }" >
-    <a href="#" v-bind:class="{'TopBanner__to--first' : !isFirst,toHide: isFirst }"><i class="home-icon"></i>首页</a>
+
+    <router-link to="/Main" v-bind:class="{'TopBanner__to--first' : !isFirst,toHide: isFirst }"><i class="home-icon"></i>首页</router-link>
   </div>
 </template>
 

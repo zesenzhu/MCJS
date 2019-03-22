@@ -2,30 +2,41 @@
   <div class="Register">
     <Header></Header>
     <Logo></Logo>
-  <form v-on:submit.prevent="checkCode" class="register-box">
-    <div class="form-content register-mobile">
-      <label>
-        <span class="input-items">手机号：</span>
-        <input type="tel" name="mobile" maxlength="11" data-required="mobile" id="mobile" placeholder="请填写手机号"
-               class="register-mobile">
-      </label>
-    </div>
-    <div id="register-verifier" class="form-content">
-      <div id="slider">
-        <div id="slider_bg"></div>
-        <span id="label">>></span> <span id="labelTip">拖动滑块验证</span>
+    <form v-on:submit.prevent="checkCode" class="register-box">
+      <div class="form-content register-mobile">
+        <label>
+          <span class="input-items">手机号：</span>
+          <input type="tel" name="mobile" maxlength="11" data-required="mobile" id="mobile" placeholder="请填写手机号"
+                 class="register-mobile">
+        </label>
       </div>
-    </div>
-    <div v-if="show" class="form-content register-mobileCode">
-      <input type="text" name="mobileCode" maxlength="6" v-model='mobileCode' data-required="mobileCode" id="mobileCode" placeholder="请填写6位验证码"
-             class="register-mobileCode" v-on:change="lisFocusCode">
-      <button id="register-sendCode" class="btn btn-send" v-bind:class="{'btn-disabled':sendDisabled}" v-on:click.prevent="sendMsm">获取验证码</button>
-    </div>
-    <div v-if="show" class="form-content register-mobileCode"><input class="btn-submit" v-bind:class="{'btn-disabled':!submitDisabled}"   disabled  id="register-submit" type="submit" v-model="isLoginUp" >
-    </div>
-  </form>
-    <p class="Tip-change">已注册账号 ？ <router-link class="font-colorG" to="/LoginIn">请登录</router-link></p>
-  <LoginWay></LoginWay>
+      <div id="register-verifier" class="form-content">
+        <div id="slider">
+          <div id="slider_bg"></div>
+          <span id="label">>></span> <span id="labelTip">拖动滑块验证</span>
+        </div>
+      </div>
+      <div v-if="show" class="form-content register-mobileCode">
+        <input type="text" name="mobileCode" maxlength="6" v-model='mobileCode' data-required="mobileCode"
+               id="mobileCode" placeholder="请填写6位验证码"
+               class="register-mobileCode" v-on:change="lisFocusCode">
+        <button id="register-sendCode" class="btn btn-send" v-bind:class="{'btn-disabled':sendDisabled}"
+                v-on:click.prevent="sendMsm">获取验证码
+        </button>
+      </div>
+      <div v-if="show" class="form-content register-mobileCode"><input class="btn-submit"
+                                                                       v-bind:class="{'btn-disabled':!submitDisabled}"
+                                                                       disabled id="register-submit" type="submit"
+                                                                       v-model="isLoginUp">
+      </div>
+    </form>
+    <p v-if="!hasAccount&&!isAccount" class="Tip-change">已注册账号 ？
+      <router-link class="font-colorG" to="/LoginIn">请登录</router-link>
+    </p>
+    <p v-if="hasAccount||isAccount" class="Tip-change">不喜欢验证码登录？
+      <router-link class="font-colorG" to="/LoginIn">可账密登录</router-link>
+    </p>
+    <LoginWay></LoginWay>
   </div>
 </template>
 
@@ -38,10 +49,12 @@
   export default {
     name: "Register",
     props: ['registerHost'],
-    components: {LoginWay,Header,Logo},
-    template: {LoginWay,Header,Logo},
+    components: {LoginWay, Header, Logo},
+    template: {LoginWay, Header, Logo},
     data() {
       return {
+        isAccount: false,
+        hasAccount: false,
         php_sessionId: '',
         isLoginUp: '注册',
         mobileCode: '',
@@ -51,7 +64,8 @@
         oldMobile: null,
         nextStep: false,
         show: false,
-        host: "http://localhost/MKJS/php/register/"
+        fromPath: '',
+        host: "/php/register/"
       }
     },
     mounted: function () {
@@ -79,6 +93,29 @@
       });
       slider.init();
     },
+    created: function () {
+      var $this = this;
+      if ($this.isAccount) {
+        $this.isLoginUp = '登录';
+        $this.hasAccount = true;
+      }
+
+    },
+    beforeRouteEnter(to, from, next) {
+      // 在渲染该组件的对应路由被 confirm 前调用
+      // 不！能！获取组件实例 `this`
+      // 因为当钩子执行前，组件实例还没被创建
+      var fromPath = from.path;
+      console.log(fromPath);
+      if (fromPath == '/LoginIn') {
+      }
+      next(vm => {
+        if (fromPath == '/LoginIn') {
+          console.log(vm.isAccount);
+          vm.isAccount = true;
+        }
+      })
+    },
     methods: {
       checkPhone: function (ele) {
         var phone = $(ele).val();
@@ -91,28 +128,34 @@
       registerMobile: function () {
         var $this = this;
         //发送 post 请求
-        this.$http.post(this.host + "register.php", {Mobile: $("#mobile").val()},{emulateJSON:true}).then(function (res) {
+        this.$http.post(this.host + "register.php", {Mobile: $("#mobile").val()}, {emulateJSON: true}).then(function (res) {
           $this.postRes = res.body;
           console.log(res);
           var ResMessage = res.body.message;
           console.log(res.body.code);
           if (res.body.code == 10200) {
+            sessionStorage.setItem("status", res.body.data.code);
             if (res.body.data.code == 1) {
               $("#labelTip").html("拖动滑块验证");
               $("#labelTip").css("color", "#787878");
+
               $this.isLoginUp = '登录';
               $this.show = true;
+              $this.hasAccount = true;
             } else if (res.body.data.code == 2) {
               $this.show = true;
               $this.isLoginUp = '注册';
+              $this.isAccount = false;
               console.log($this.show);
               return;
             }
+
           } else {
             $("#labelTip").html("拖动滑块验证");
             $("#labelTip").css("color", "#787878");
           }
-          $this.Message(ResMessage);
+          if (!$this.isAccount)
+            $this.Message(ResMessage);
         }, function (res) {
           $this.postRes = res.status;
           console.log(res.status);
@@ -129,86 +172,91 @@
         var $this = this;
         var Cookie;
         //发送 post 请求
-          this.$http.post(this.host + 'smsyzm.php', {Mobile: $("#mobile").val()},{emulateJSON:true}).then(function (res) {
-            $this.php_sessionId = document.cookie;
-            console.log($this.php_sessionId);
-            if(res.body == null){
-              var Data = res.bodyText;
-              console.log(res);
-              console.log(res.bodyText instanceof Object);
-              var IndexOf = Data.indexOf('code');
-              var Code = Data.substring(IndexOf + 7 ,IndexOf + 12);
-              if(Code == '10000'||Code =='000000'){
-                $this.isSetTime("#register-sendCode");
-                // $this.php_sessionId =
-              }else{
-                $this.Message("验证码系统有误，请联系管理员");
-                $("#register-sendCode").text("重试");
-              }
-            }else{
-              var Data = res.body;
-              console.log(res);
-              console.log(res.body instanceof Object);
-
-              if(Data.code == '000000'){
-                $this.isSetTime("#register-sendCode");
-              }else{
-                $this.Message("验证码系统有误，请联系管理员");
-                $("#register-sendCode").text("重试");
-              }
+        this.$http.post(this.host + 'smsyzm.php', {Mobile: $("#mobile").val()}, {emulateJSON: true}).then(function (res) {
+          $this.php_sessionId = document.cookie;
+          console.log($this.php_sessionId);
+          if (res.body == null) {
+            var Data = res.bodyText;
+            console.log(res);
+            console.log(res.bodyText instanceof Object);
+            var IndexOf = Data.indexOf('code');
+            var Code = Data.substring(IndexOf + 7, IndexOf + 12);
+            if (Code == '10000' || Code == '000000') {
+              $this.isSetTime("#register-sendCode");
+              // $this.php_sessionId =
+            } else {
+              $this.Message("验证码系统有误，请联系管理员");
+              $("#register-sendCode").text("重试");
             }
+          } else {
+            var Data = res.body;
+            console.log(res);
+            console.log(res.body instanceof Object);
 
-          }, function (res) {
-          });
+            if (Data.code == '000000') {
+              $this.isSetTime("#register-sendCode");
+            } else {
+              $this.Message("验证码系统有误，请联系管理员");
+              $("#register-sendCode").text("重试");
+            }
+          }
+
+        }, function (res) {
+        });
       },
       isSetTime: function (ele) {
         var $this = this;
         var $ele = ele instanceof Object ? ele : $(ele);
         //60秒倒计时
-        if ($this.countdown == 0){
-          $ele.attr("disabled",false);
+        if ($this.countdown == 0) {
+          $ele.attr("disabled", false);
           $this.sendDisabled = false;
           $ele.text("重新发送");
           $this.countdown = 60;
           return;
-        }else{
+        } else {
           $this.sendDisabled = true;
           $ele.attr("disabled", true);
           $ele.text($this.countdown + "s");
           $this.countdown--;
         }
-        setTimeout(function() {
-            $this.isSetTime($ele) }
-          ,1000)
+        setTimeout(function () {
+            $this.isSetTime($ele)
+          }
+          , 1000)
       },
       checkCode: function () {
         var $this = this;
         var code = $("#mobileCode").val();
-        console.log(code);
-        $this.$http.post(this.host + "check.php",{Mobile: $("#mobile").val(),MobileCode: code},{emulateJSON: true}).then(function (res) {
+        console.log(code, sessionStorage.getItem("status"));
+        $this.$http.post(this.host + "check.php", {
+          Mobile: $("#mobile").val(),
+          MobileCode: code,
+          status: sessionStorage.getItem("status")
+        }, {emulateJSON: true}).then(function (res) {
           console.log(res.body);
-          if(res.body.code == '10000'){
+          if (res.body.code == '10000' || res.body.code == '10010') {
             $this.nextStep = true;
 
             this.$router.push("/Main");
-            localStorage.setItem("token",res.body.token);
-          }else{
+            localStorage.setItem("token", res.body.token);
+          } else {
             $this.Message("验证码有误，请重新输入");
             $this.mobileCode = '';
             $this.nextStep = false;
           }
-        },function (res) {
+        }, function (res) {
 
         })
       },
       lisFocusCode: function (e) {
         let Code = this.mobileCode;
-        if(Code.length == 6){
+        if (Code.length == 6) {
           this.submitDisabled = true;
-        }else{
+        } else {
           this.submitDisabled = false;
         }
-        $("#register-submit").attr("disabled",!this.submitDisabled);
+        $("#register-submit").attr("disabled", !this.submitDisabled);
       }
     }
   }
@@ -217,12 +265,14 @@
 
 <style lang="scss" scoped>
   @import '../takeout/slide-unlock.css';
-  .Register{
+
+  .Register {
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-start;
     align-items: center;
   }
+
   .register-box {
     position: relative;
     width: 8rem;
@@ -296,7 +346,7 @@
         font-size: 0.3rem;
       }
       .btn-disabled {
-        background-color: #cccccc!important;
+        background-color: #cccccc !important;
       }
       .btn-submit {
         display: inline-block;
@@ -335,16 +385,18 @@
           border: none !important;
 
         }
-        #labelTip{
+        #labelTip {
           line-height: 1rem;
         }
       }
     }
   }
-.Tip-change{
-  margin-top: 1rem;
-  text-align: center;
-}
+
+  .Tip-change {
+    margin-top: 1rem;
+    text-align: center;
+  }
+
   #label {
     font-family: "宋体";
   }
