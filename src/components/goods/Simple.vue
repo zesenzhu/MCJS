@@ -42,7 +42,8 @@
 
 
     <ShowComment :comments="comment"></ShowComment>
-  <GoodsBottom></GoodsBottom>
+  <BuyGoods v-bind:productMessage="productMassage"></BuyGoods>
+  <GoodsBottom v-bind:goods-collect="goodsCollect"></GoodsBottom>
   <!--<Modals></Modals>-->
 </div>
 
@@ -53,14 +54,11 @@
   import Swiper from "swiper"
   import GoodsBottom from "./GoodsBottom"
   import ShowComment from "./ShowComment"
-
-
-
-
+  import BuyGoods from "./BuyGoods"
     export default {
         name: "Simple",
-      components:{GoodsBottom,ShowComment},
-      template:{GoodsBottom,ShowComment},
+      components:{GoodsBottom,ShowComment,BuyGoods},
+      template:{GoodsBottom,ShowComment,BuyGoods},
       props:[''],
       data(){
           return{
@@ -84,7 +82,8 @@
             classify:'',
             avatar:"",
             owner:"",
-            comment:''
+            comment:'',
+            goodsCollect:''
 
 
           }
@@ -167,38 +166,20 @@
 
       },
       created() {
-        /*let goodsId = this.$route.params['goods_id'];
-        console.log(this.$route.params['goods_id']);
-        this.$http.get(this.productPHP, {params: {goods_id: goodsId}}).then(function (res) {
-          let body = res.body;
-          if (body.code = '10000') {
-            this.productMassage = body.goods;
-            console.log(this.productMassage);
-          } else if (body.code = '10010') {
-            console.log('没有商品');
-          } else {
-            console.log('PHP有bug');
-          }
-        });
 
-      //  商品信息
-        let addTime = new Date(this.productMassage.addtime*1000);
-        this.FullYear = addTime.getFullYear();
-        this.Month = addTime.getMonth();
-        this.Dates = addTime.getDate();
-        this.Hours = addTime.getHours();
-        this.Minutes = addTime.getMinutes();
-        this.Seconds = addTime.getSeconds();*/
       },
       mounted(){
           let $this = this;
         let goodsId = this.$route.params['goods_id'];
         $this.goods_id = goodsId;
+        let userName = sessionStorage.getItem("username");
         console.log(this.$route.params['goods_id']);
-        this.$http.get(this.productPHP, {params: {goods_id: goodsId}}).then(function (res) {
+        this.$http.get(this.productPHP, {params: {goods_id: goodsId,username:userName}}).then(function (res) {
           let body = res.body;
           if (body.code = '10000') {
             this.productMassage = body.goods;
+            //获得是否收藏字段
+            $this.goodsCollect = $this.productMassage.goodsCollect;
             console.log(this.productMassage);
             //  商品信息
             let addTime = new Date(this.productMassage.addtime*1000);

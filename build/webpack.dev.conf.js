@@ -10,7 +10,27 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 
-const HOST = process.env.HOST
+// const HOST = process.env.HOST   //webpack原设置
+// const HOST = "192.168.1.248"   //宿舍ipv4
+// const HOST = "127.0.0.1"      //本地访问
+
+/*新node获得 ip地址*/
+const os = require('os');
+///////////////////获取本机ip///////////////////////
+function getIPAdress() {
+  var interfaces = os.networkInterfaces();
+  for (var devName in interfaces) {
+    var iface = interfaces[devName];
+    for (var i = 0; i < iface.length; i++) {
+      var alias = iface[i];
+      if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal) {
+        return alias.address;
+      }
+    }
+  }
+}
+const HOST = getIPAdress(); // end
+
 const PORT = process.env.PORT && Number(process.env.PORT)
 
 const devWebpackConfig = merge(baseWebpackConfig, {

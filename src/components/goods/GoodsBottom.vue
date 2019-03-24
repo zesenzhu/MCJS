@@ -19,14 +19,31 @@
         name: "GoodsBottom",
       components:{ModalsComment},
       template:{ModalsComment},
+      props:["goodsCollect"],
       data(){
           return {
             layer1:'',
             collectActive:false
           }
       },
+      watch:{
+        goodsCollect:function (val) {
+          if(this.goodsCollect == "1"){
+            this.collectActive = true;
+          }else if(this.goodsCollect == "0"){
+            this.collectActive = false;
+          }
+          console.log(this.goodsCollect);
+        }
+      },
       mounted(){
-          let $this = this,goodsId = this.$route.params.goods_id,userName = sessionStorage.getItem("username");;
+          let $this = this,goodsId = this.$route.params.goods_id,userName = sessionStorage.getItem("username"),$toBuy = $(".toBuy");
+
+        //立即购买
+        $toBuy.on("click",function (e) {
+          $("#BuyGoods").slideDown();
+        })
+
         $(".toComment").on("click",function () {
 
           //this.$layer.alert("找不到对象！");
@@ -47,20 +64,21 @@
         $(".toCollect").on("click",function (e) {
           $this.collectActive = !$this.collectActive;
 
-          this.$http.post(
+          $this.$http.post(
             "/php/handle/buyerCollect.php",
-            {goods_id:goodsId,comment_ownerName:userName,collectActive:$this.collectActive},
+            {goods_id:goodsId,userName:userName,collectActive:$this.collectActive},
             {emulateJSON: true}
           ).then(function (res) {
 
             let Body = res.body;
             console.log(Body);
             if(Body.code=="10000"){
-              //window.comment = res.body.comment;
-              let comments = Body.comment;
-              $this.$bus.emit('updateComment',comments );
-              $this.$layer.close(window.layer1 );
-              this.$Message("评论成功",3000);
+              if($this.collectActive){
+                this.$Message("收藏成功",3000);
+              }else{
+                this.$Message("取消收藏成功",3000);
+              }
+
 
             }
           })
