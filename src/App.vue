@@ -32,6 +32,49 @@
       }, function (res) {
 
       })
+
+
+
+    },
+    beforeCreate(){
+      //token验证
+      let $this = this;
+      let token = localStorage.getItem("token");
+      $this.$http.post("/php/Token/check_token.php", {Btoken: token}, {emulateJSON: true}).then(function (res) {
+        console.log(res.body);
+        if (res.body.code == '10000') {
+          sessionStorage.setItem("username", res.body.username);
+          sessionStorage.setItem("addtime", res.body.addtime);
+          sessionStorage.setItem("mobilephone", res.body.mobilephone);
+          sessionStorage.setItem("power", res.body.power);
+          sessionStorage.setItem("userId", res.body.userId);
+
+        } else {
+          $this.Message("token过期，请重新登录");
+        }
+      }, function (res) {
+      })
+    },
+    methods:{
+      //token验证
+      checkToken:function() {
+    let $this = this;
+    let token = localStorage.getItem("token");
+    $this.$http.post("/php/Token/check_token.php", {Btoken: token}, {emulateJSON: true}).then(function (res) {
+      console.log(res.body);
+      if (res.body.code == '10000') {
+        sessionStorage.setItem("username", res.body.username);
+        sessionStorage.setItem("addtime", res.body.addtime);
+        sessionStorage.setItem("mobilephone", res.body.mobilephone);
+        sessionStorage.setItem("power", res.body.power);
+        sessionStorage.setItem("userId", res.body.userId);
+
+      } else {
+        $this.Message("token过期，请重新登录");
+      }
+    }, function (res) {
+    })
+  }
     }
   }
 
@@ -55,6 +98,7 @@
     align-items: center;
     color: #2c3e50;
     min-height: 100vh;
+    overflow: hidden;
     #message {
       position: fixed;
       top: 50%;

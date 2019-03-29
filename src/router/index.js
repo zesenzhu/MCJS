@@ -6,6 +6,10 @@ import Main from '@/views/Main'
 import Product from '@/views/Product'
 import Simple from '@/components/goods/Simple'
 import Details from '@/components/goods/Details'
+import Confirm from '@/views/Confirm'
+import Cart from '@/views/Cart'
+import My from '@/views/My'
+import Forum from '@/views/Forum'
 Vue.use(Router)
 
 export default new Router({
@@ -47,6 +51,38 @@ export default new Router({
           path: 'Details',
           component: Details
         }
+      ]
+    },
+    {
+      path: '/Confirm/:goods_id',
+      name: 'Confirm',
+      component: Confirm,
+      children: [
+
+      ]
+    },
+    {
+      path: '/Cart',
+      name: 'Cart',
+      component: Cart,
+      children: [
+
+      ]
+    },
+    {
+      path: '/My',
+      name: 'My',
+      component: My,
+      children: [
+
+      ]
+    },
+    {
+      path: '/Forum',
+      name: 'Forum',
+      component: Forum,
+      children: [
+
       ]
     },
   ]

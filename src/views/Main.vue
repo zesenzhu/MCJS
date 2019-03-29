@@ -9,6 +9,7 @@
     <p>{{addTime}}</p>
     <p>{{mobilePhone}}</p>
     <p>{{power}}</p>
+    <p>{{userId}}</p>
     <CommonGoodsShow v-bind:goodsShowUrl="goodsShowUrl"></CommonGoodsShow>
   </div>
 </template>
@@ -74,7 +75,8 @@
         goodsShowUrl: '/php/goods/mainShow.php',
         hasButton: false,
         hasScrollbar: false,
-        hasPagination: true
+        hasPagination: true,
+        userId:''
       }
     },
     methods: {
@@ -88,11 +90,13 @@
             sessionStorage.setItem("addtime", res.body.addtime);
             sessionStorage.setItem("mobilephone", res.body.mobilephone);
             sessionStorage.setItem("power", res.body.power);
+            sessionStorage.setItem("userId", res.body.userId);
 
             $this.userName = sessionStorage.getItem("username");
             $this.addTime = sessionStorage.getItem("addtime");
             $this.mobilePhone = sessionStorage.getItem("mobilephone");
             $this.power = sessionStorage.getItem("power");
+            $this.userId = sessionStorage.getItem("userId");
             console.log(sessionStorage);
             $this.isAccount = true;
           } else {

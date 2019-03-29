@@ -8,7 +8,7 @@
     </router-link>
     <router-link to="/Forum">
       <div class="icon-center">
-        <i class="FC-ForumIcon" v-bind:class="{'FC-FC-ForumIconActive':this.$route.path=='/Forum'}"></i>
+        <i class="FC-ForumIcon" v-bind:class="{'FC-ForumIconActive':this.$route.path=='/Forum'}"></i>
         <span class="FC-ForumFont">论坛</span>
       </div>
     </router-link>
@@ -57,9 +57,13 @@
   #footerCommonNav {
     position: fixed;
     bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
     width: 10rem;
     height: 1.4rem;
-    background-color: #379dff;
+    background-color: #fff;
+    border-top: 1px #999 solid;
     display: flex;
     flex-flow: row nowrap;
     justify-content: flex-start;

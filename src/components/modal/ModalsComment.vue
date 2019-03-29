@@ -16,9 +16,6 @@
       },
       mounted(){
           let $this = this;
-          console.log($this.$bus)
-
-
       },
       methods:{
         CommentSubmit(){

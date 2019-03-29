@@ -33,15 +33,23 @@
           }else if(this.goodsCollect == "0"){
             this.collectActive = false;
           }
-          console.log(this.goodsCollect);
+
         }
       },
       mounted(){
-          let $this = this,goodsId = this.$route.params.goods_id,userName = sessionStorage.getItem("username"),$toBuy = $(".toBuy");
+          let $this = this,
+            goodsId = this.$route.params.goods_id,
+            userName = sessionStorage.getItem("username"),
+            $toBuy = $(".toBuy"),
+            $addCart = $(".addToCar");
 
         //立即购买
         $toBuy.on("click",function (e) {
           $("#BuyGoods").slideDown();
+        });
+        //购物车
+        $addCart.on("click",function (e) {
+          $("#AddGoods").slideDown();
         })
 
         $(".toComment").on("click",function () {
@@ -59,7 +67,6 @@
             shadeClose: true,//点击遮罩是否关闭
           });
           window.layer1 = $this.layer1;
-          console.log(window.layer1)
         });
         $(".toCollect").on("click",function (e) {
           $this.collectActive = !$this.collectActive;
@@ -71,7 +78,6 @@
           ).then(function (res) {
 
             let Body = res.body;
-            console.log(Body);
             if(Body.code=="10000"){
               if($this.collectActive){
                 this.$Message("收藏成功",3000);
@@ -95,6 +101,9 @@
 .goodsBottom{
   position: fixed;
   bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
   width: 10rem;
   height: 1.4rem;
   background: #fff;

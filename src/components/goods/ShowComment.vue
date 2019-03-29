@@ -38,7 +38,6 @@
           let $this = this ;
         // 用$on事件来接收参数
         $this.$bus.on('updateComment', (data) => {
-          console.log(data)
           $this.myComment = data;
         })
 

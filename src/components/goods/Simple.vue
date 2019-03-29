@@ -42,7 +42,8 @@
 
 
     <ShowComment :comments="comment"></ShowComment>
-  <BuyGoods v-bind:productMessage="productMassage"></BuyGoods>
+  <BuyGoods></BuyGoods>
+  <AddGoods></AddGoods>
   <GoodsBottom v-bind:goods-collect="goodsCollect"></GoodsBottom>
   <!--<Modals></Modals>-->
 </div>
@@ -55,10 +56,11 @@
   import GoodsBottom from "./GoodsBottom"
   import ShowComment from "./ShowComment"
   import BuyGoods from "./BuyGoods"
+  import AddGoods from "./AddGoods"
     export default {
         name: "Simple",
-      components:{GoodsBottom,ShowComment,BuyGoods},
-      template:{GoodsBottom,ShowComment,BuyGoods},
+      components:{GoodsBottom,ShowComment,BuyGoods,AddGoods},
+      template:{GoodsBottom,ShowComment,BuyGoods,AddGoods},
       props:[''],
       data(){
           return{
@@ -83,9 +85,8 @@
             avatar:"",
             owner:"",
             comment:'',
-            goodsCollect:''
-
-
+            goodsCollect:'',
+            toBuyMessage:''
           }
       },
       methods:{
@@ -115,55 +116,13 @@
               scrollbar: '.swiper-scrollbar',
             })
           }
-
-
       },
       computed:{
-         /* PM:{
-            get(){
-              return this.productMassage.addtime*1000;
-            }
-          },*/
-        /*FullYear:{
-          get(){
-            let addTime = new Date(this.productMassage.addtime*1000);
-            return addTime.getFullYear();
-          }
-        },
-        Month:{
-            get(){
-              let addTime = new Date(this.productMassage.addtime*1000);
-              return addTime.getMonth();
-            }
-        },
-        Dates:{
-          get(){
-            let addTime = new Date(this.productMassage.addtime*1000);
-            return addTime.getDate();
-          }
-        },
-        Hours:{
-          get(){
-            let addTime = new Date(this.productMassage.addtime*1000);
-            return addTime.getHours();
-          }
-        },
-        Minutes:{
-          get(){
-            let addTime = new Date(this.productMassage.addtime*1000);
-            return addTime.getMinutes();
-          }
-        },
-        Seconds:{
-          get(){
-            let addTime = new Date(this.productMassage.addtime*1000);
-            return addTime.getSeconds();
-          }
-        },*/
-
       },
       watch:{
-
+        productMassage(val){
+          this.productMassage = val;
+        }
       },
       created() {
 
@@ -176,7 +135,7 @@
         console.log(this.$route.params['goods_id']);
         this.$http.get(this.productPHP, {params: {goods_id: goodsId,username:userName}}).then(function (res) {
           let body = res.body;
-          if (body.code = '10000') {
+          if (body.code == '10000') {
             this.productMassage = body.goods;
             //获得是否收藏字段
             $this.goodsCollect = $this.productMassage.goodsCollect;
@@ -205,8 +164,10 @@
               $this.owner = $this.productMassage.user_msg;
               $this.comment = $this.productMassage.comment;
             }
+            $this.$bus.emit('ProductMassage',$this.productMassage );
 
-          } else if (body.code = '10010') {
+
+          } else if (body.code == '10010') {
             console.log('没有商品');
           } else {
             console.log('PHP有bug');

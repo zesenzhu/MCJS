@@ -26,6 +26,9 @@ Vue.prototype.$Message = Message;
   }, time ? time : 2000);
 };
 
+
+
+
 Vue.config.productionTip = false
 Vue.use(VueResource)
 
