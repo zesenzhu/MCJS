@@ -5,11 +5,7 @@
 
     <CommonNav></CommonNav>
     <CenterNav></CenterNav>
-    <p>{{userName}}</p>
-    <p>{{addTime}}</p>
-    <p>{{mobilePhone}}</p>
-    <p>{{power}}</p>
-    <p>{{userId}}</p>
+
     <CommonGoodsShow v-bind:goodsShowUrl="goodsShowUrl"></CommonGoodsShow>
   </div>
 </template>

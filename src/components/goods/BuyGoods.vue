@@ -72,7 +72,12 @@
         $(".comfirm-btn").on("click",function () {
           //跳确认名单组件时带上商品信息
           $this.$bus.emit("toConfirm",$this.productMassage);
-          console.log($this.$bus)
+          //跳转时带上信息
+
+          $this.$store.commit("confirmGoodsDetailsHandle", {
+            details: $this.num
+          })
+
         })
 
       }

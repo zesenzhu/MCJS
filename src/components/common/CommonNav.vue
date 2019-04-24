@@ -1,38 +1,38 @@
 <template>
   <div id="footerCommonNav">
-    <router-link to="/Main">
+    <router-link to="/Main" active-class="NavActive">
       <div class="icon-center">
-        <i class="FC-HomeIcon" v-bind:class="{'FC-HomeIconActive':this.$route.path=='/Main'}"></i>
+        <i class="FC-HomeIcon" v-bind:class="'FC-HomeIconActive'"></i>
         <span class="FC-HomeFont" >首页</span>
       </div>
     </router-link>
-    <router-link to="/Forum">
+    <router-link to="/Forum" active-class="NavActive">
       <div class="icon-center">
-        <i class="FC-ForumIcon" v-bind:class="{'FC-ForumIconActive':this.$route.path=='/Forum'}"></i>
+        <i class="FC-ForumIcon" v-bind:class="'FC-ForumIconActive'"></i>
         <span class="FC-ForumFont">论坛</span>
       </div>
     </router-link>
-    <!--<router-link to="/Chat">
+    <router-link to="/Chat" active-class="NavActive">
       <div class="icon-center">
-        <i class="FC-ChatIcon" v-bind:class="{'FC-HomeIconActive':this.$route.path=='/Chat'}"></i>
+        <i class="FC-ChatIcon" v-bind:class="'FC-ChatIconActive'"></i>
         <span class="FC-ChatFont">聊天室</span>
       </div>
-    </router-link>-->
-    <a href="https://www.qiufengh.com/#/chat?roomId=room1">
+    </router-link>
+    <!--<a href="https://www.qiufengh.com/#/chat?roomId=room1">-->
+      <!--<div class="icon-center">-->
+        <!--<i class="FC-ChatIcon"></i>-->
+        <!--<span class="FC-ChatFont">聊天室</span>-->
+      <!--</div>-->
+    <!--</a>-->
+    <router-link to="/Cart" active-class="NavActive">
       <div class="icon-center">
-        <i class="FC-ChatIcon"></i>
-        <span class="FC-ChatFont">聊天室</span>
-      </div>
-    </a>
-    <router-link to="/Cart">
-      <div class="icon-center">
-        <i class="FC-CartIcon" v-bind:class="{'FC-CartIconActive':this.$route.path=='/Cart'}"></i>
+        <i class="FC-CartIcon" v-bind:class="'FC-CartIconActive'"></i>
         <span class="FC-CartFont">购物车</span>
       </div>
     </router-link>
-    <router-link to="/My">
+    <router-link to="/My" active-class="NavActive">
       <div class="icon-center">
-        <i class="FC-MyIcon" v-bind:class="{'FC-MyIconActive':this.$route.path=='/My'}"></i>
+        <i class="FC-MyIcon" v-bind:class="'FC-MyIconActive'"></i>
         <span class="FC-MyFont">我的</span>
       </div>
     </router-link>
@@ -107,48 +107,55 @@
       }
 
 
-      /*active*/
-      .FC-HomeIconActive {
-        background: url("../../assets/fCommonHomeActive.png") no-repeat center;
-        background-size: contain;
-      }
-      .FC-HomeIconActive+span{
-        color:#7ac23c;
-      }
-      .FC-ForumIconActive {
-        background: url("../../assets/fCommonForumActive.png") no-repeat center;
-        background-size: contain;
-      }
-      .FC-ForumIconActive+span{
-        color:#7ac23c;
-      }
-      .FC-ChatIconActive {
-        background: url("../../assets/fCommonChatActive.png") no-repeat center;
-        background-size: contain;
-      }
-      .FC-ChatIconActive+span{
-        color:#7ac23c;
-      }
-      .FC-CartIconActive {
-        background: url("../../assets/fCommonCartActive.png") no-repeat center;
-        background-size: contain;
-      }
-      .FC-CartIconActive+span{
-        color:#7ac23c;
-      }
-      .FC-MyIconActive {
-        background: url("../../assets/fCommonMyActive.png") no-repeat center;
-        background-size: contain;
-      }
-      .FC-MyIconActive+span{
-        color:#7ac23c;
-      }
 
-      span {
-        color: #707070;
-        font-size: 0.1rem;
+  span {
+    color: #707070;
+    font-size: 0.1rem;
 
-      }
+  }
+
+
     }
+  /*active*/
+  .NavActive{
+  .FC-HomeIconActive {
+    background: url("../../assets/fCommonHomeActive.png") no-repeat center;
+    background-size: contain;
+  }
+  .FC-HomeIconActive+span{
+    color:#7ac23c;
+  }
+  .FC-ForumIconActive {
+    background: url("../../assets/fCommonForumActive.png") no-repeat center;
+    background-size: contain;
+  }
+  .FC-ForumIconActive+span{
+    color:#7ac23c;
+  }
+  .FC-ChatIconActive {
+    background: url("../../assets/fCommonChatActive.png") no-repeat center;
+    background-size: contain;
+  }
+  .FC-ChatIconActive+span{
+    color:#7ac23c;
+  }
+  .FC-CartIconActive {
+    background: url("../../assets/fCommonCartActive.png") no-repeat center;
+    background-size: contain;
+  }
+  .FC-CartIconActive+span{
+    color:#7ac23c;
+  }
+  .FC-MyIconActive {
+    background: url("../../assets/fCommonMyActive.png") no-repeat center;
+    background-size: contain;
+  }
+  .FC-MyIconActive+span{
+    color:#7ac23c;
+  }
+
+
+  }
+
   }
 </style>

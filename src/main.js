@@ -12,8 +12,25 @@ import VueResource from 'vue-resource'
 import './takeout/swiper.css';
 import layer from 'vue-layer'
 import VueBus from 'vue-bus';
+import store from './store.js'
+import $ from 'jquery'
+import axios from 'axios'
+import Axios from './axios/config.js'
+
+//socket地址
+var socketBaseUrl = process.env.SOCKET_HOST;
+
+Vue.prototype.$socketBaseUrl = socketBaseUrl;
+
+
+Vue.prototype.$ajax = Axios;
+
 
 Vue.use(VueBus);
+
+
+//axios.defaults.baseURL = process.env.API_HOST;
+
 
 //把属性或方法放在vue原型里
 Vue.prototype.$layer = layer(Vue);
@@ -37,6 +54,8 @@ console.log($("body").css("font-size"));
 new Vue({
   el: '#app',
   router,
+  store,
+  axios,
   components: { App },
   template: '<App/>'
 })

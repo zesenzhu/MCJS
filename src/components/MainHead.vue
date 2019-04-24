@@ -6,8 +6,8 @@
       <input class="MH_search_input" type="text" disabled :placeholder='MH_searchPlaceHolder'>
     </label>
     <router-link v-if="!this.isAccount" class="noAccount" to="/loginIn">登录</router-link>
+    <router-link v-if="this.isAccount" class="isAccount" to="/My"></router-link>
 
-    <input v-if="this.isAccount" type="button" value="" class="isAccount">
   </div>
 </template>
 

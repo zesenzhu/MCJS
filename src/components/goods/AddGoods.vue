@@ -4,7 +4,7 @@
     <div class="content">
       <a class="close"></a>
       <div class="content-1">
-        <p class="contentHead">立即购买</p>
+        <p class="contentHead">加入购物车</p>
         <div class="content-2">
           <img class="goods_thumb" >
           <span class="goods_price_buy"></span>

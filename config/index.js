@@ -20,12 +20,20 @@ module.exports = {
         }*/
       },
       '/upload': {  //代理地址
-        target: 'http://39.108.172.235:80/',  //需要代理的地址
+        target: 'http://localhost',  //需要代理的地址
         changeOrigin: true,  //是否跨域
         secure: false,
         /*pathRewrite: {
           '^/api': '/'   //本身的接口地址没有 '/api' 这种通用前缀，所以要rewrite，如果本身有则去掉
         }*/
+      },
+      "/api": {
+        target: "http://localhost/php", //设置你调用的接口域名和端口号
+        changeOrigin: true, //跨域
+        secure: false,
+        pathRewrite: {
+          "^/api": "/"
+        }
       }
     },
 

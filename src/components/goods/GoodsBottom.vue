@@ -3,7 +3,7 @@
 <div class="gb-left">
   <span class="toComment" ><i class="icon-comment"></i><span>评论</span></span>
   <span class="toCollect"><i class="icon-collect" v-bind:class="{'icon-collect-active':collectActive}"></i><span>收藏</span></span>
-  <span class="toMessage"><i class="icon-message"></i><span>私信</span></span>
+  <router-link to="/Chat/toClient" class="toMessage"><i class="icon-message"></i><span>私信</span></router-link>
 </div>
   <div class="gb-right">
     <span class="addToCar">加入购物车</span>
